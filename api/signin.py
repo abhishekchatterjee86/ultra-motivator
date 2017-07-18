@@ -1,5 +1,5 @@
 #!/usr/bin/python
-print "Content-type:text/html\n\n"
+print("Content-type:text/html\n\n")
 import MySQLdb
 import hashlib
 import cgi
@@ -36,15 +36,15 @@ try:
 		name = str(row[0])
 		password = str(row[1])
 		if name == input_username and check_password(password, input_password):
-			print json.dumps({'username':input_username, 'password': input_password})
+			print(json.dumps({'username':input_username, 'password': input_password}))
 			signed_in = True;
 			break
 			
 	if signed_in == False:
-		print json.dumps({'error':'invalid username and/or password'})
+		print(json.dumps({'error':'invalid username and/or password'}))
 
-except MySQLdb.Error, e:
-	print json.dumps({'error':"Error %d: %s" % (e.args[0], e.args[1])})
+except MySQLdb.Error as e:
+	print(json.dumps({'error':"Error %d: %s" % (e.args[0], e.args[1])}))
 	sys.exit (1)
 
 finally:

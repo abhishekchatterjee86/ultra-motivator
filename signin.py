@@ -9,10 +9,10 @@ def check_password(hashed_password, user_password):
     password, salt = hashed_password.split(':')
     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
-print "Content-type: text/html"
-print
+print("Content-type: text/html")
+print()
 
-print """
+print("""
 <html>
 
 <head>
@@ -27,12 +27,12 @@ print """
 <body>
 
 <h1> Ultra Motivator Sign In </h1>
-"""
+""")
 
 form = cgi.FieldStorage()
 
 if "username" not in form or "password" not in form:
-	print """
+	print("""
 
 	 <div class="center">
 	  <form method="post" action="#">
@@ -45,7 +45,7 @@ if "username" not in form or "password" not in form:
 	</body>
 
 	</html>
-	"""
+	""")
 else:
 	
 	input_username = form.getvalue("username", "")
@@ -71,16 +71,16 @@ else:
 			name = str(row[0])
 			password = str(row[1])
 			if name == input_username and check_password(password, input_password):
-				print """<h1>Signed in as %s</h1>""" % name
-				print """<p>"If you want to build a ship, don't drum up the people to gather wood, and don't assign them tasks and work. Instead, teach them to yearn for the vast and endless sea." - Antoine de Saint-Exupery</p>"""
+				print("""<h1>Signed in as %s</h1>""" % name)
+				print("""<p>"If you want to build a ship, don't drum up the people to gather wood, and don't assign them tasks and work. Instead, teach them to yearn for the vast and endless sea." - Antoine de Saint-Exupery</p>""")
 				signed_in = True
 				break
 			
 		if signed_in == False:
-			print """<h1>invalid username and/or password</h1>"""
+			print("""<h1>invalid username and/or password</h1>""")
 		
-	except MySQLdb.Error, e:
-		print """<h1>Error %d: %s</h1>""" % (e.args[0], e.args[1])
+	except MySQLdb.Error as e:
+		print("""<h1>Error %d: %s</h1>""" % (e.args[0], e.args[1]))
 	finally:
 		if cur:
 			# close the cursor
@@ -88,4 +88,4 @@ else:
 		if conn:
 			# close the connection
 			conn.close()
-	print """</body></html>"""
+	print("""</body></html>""")
