@@ -1,5 +1,2 @@
 Flask
 gunicorn
-MySQLdb
-hashlib
-cgi
