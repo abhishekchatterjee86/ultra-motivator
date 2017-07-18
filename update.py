@@ -1,7 +1,7 @@
 #!C:\Python27\python.exe -u
 #!/usr/bin/env python
 
-import mysqlclient
+import mysql.connector
 import hashlib
 import cgi
 import uuid
