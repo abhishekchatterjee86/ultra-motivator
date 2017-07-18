@@ -1,7 +1,7 @@
 #!C:\Python27\python.exe -u
 #!/usr/bin/env python
 
-import MySQLdb
+import mysqlclient
 import hashlib
 import cgi
 
