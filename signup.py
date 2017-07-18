@@ -1,7 +1,7 @@
 #!C:\Python27\python.exe -u
 #!/usr/bin/env python
 
-import mysql.connector
+import MySQLdb
 import hashlib
 import cgi
 import uuid
@@ -11,7 +11,7 @@ def hash_password(password):
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def show_signup_ui():
-	print("""
+	print """
 
 	 <div class="center">
 	  <form method="post" action="#">
@@ -25,12 +25,12 @@ def show_signup_ui():
 	</body>
 
 	</html>
-	""")
+	"""
 
-print("Content-type: text/html")
-print()
+print "Content-type: text/html"
+print
 
-print("""
+print """
 <html>
 
 <head>
@@ -45,12 +45,12 @@ print("""
 <body>
 
 <h1> Ultra Motivator Sign Up </h1>
-""")
+"""
 
 form = cgi.FieldStorage()
 
 if "username" not in form or "password" not in form or "confirm_password" not in form:
-	print("""<h3>Please Sign Up</h3>""")
+	print """<h3>Please Sign Up</h3>"""
 	show_signup_ui()
 else:
 	input_username = form.getvalue("username", "")
@@ -58,11 +58,11 @@ else:
 	confirm_password = form.getvalue("confirm_password", "")
 	
 	if input_password != confirm_password:
-		print("""<h3>Password Fields Did Not Match!</h3>""")
+		print """<h3>Password Fields Did Not Match!</h3>"""
 		show_signup_ui()
 	else:
 		try:
-			conn = mysql.connector.connect (
+			conn = MySQLdb.connect (
 			host = "my_host",
 			user = "my_user",
 			passwd = "my_password",
@@ -72,14 +72,14 @@ else:
 
 			command = "INSERT INTO User(username, password) VALUES(%s,%s)"
 			cur.execute(command, (input_username, hash_password(input_password)))
-			print("""<h1>Signed Up As %s</h1>""" % input_username)
-			print("""<p>"If you want to build a ship, don't drum up the people to gather wood, and don't assign them tasks and work. Instead, teach them to yearn for the vast and endless sea." - Antoine de Saint-Exupery</p>""")
+			print """<h1>Signed Up As %s</h1>""" % input_username
+			print """<p>"If you want to build a ship, don't drum up the people to gather wood, and don't assign them tasks and work. Instead, teach them to yearn for the vast and endless sea." - Antoine de Saint-Exupery</p>"""
 	
-		except mysql.connector.Error as e:
-			print("""<h1>Error %d: %s</h1>""" % (e.args[0], e.args[1]))
+		except MySQLdb.Error, e:
+			print """<h1>Error %d: %s</h1>""" % (e.args[0], e.args[1])
 		finally:
 			if cur:
 				cur.close()
 			if conn:
 				conn.close()
-	print("""</body></html>""")
+	print """</body></html>"""

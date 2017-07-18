@@ -1,7 +1,7 @@
 #!C:\Python27\python.exe -u
 #!/usr/bin/env python
 
-import mysql.connector
+import MySQLdb
 import hashlib
 import cgi
 import uuid
@@ -15,7 +15,7 @@ def hash_password(password):
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
     
 def show_update_ui():
-	print("""
+	print """
 	 <div class="center">
 	  <form method="post" action="#">
 		<p><input type="text" name="username" placeholder="Username" required autofocus autocomplete="username" /></p>
@@ -27,10 +27,10 @@ def show_update_ui():
 	  </div>
 	</body>
 	</html>
-	""")
+	"""
 
-print("Content-type: text/html\n")
-print("""
+print "Content-type: text/html\n"
+print """
 <html>
 <head>
 <meta charset="utf-8">
@@ -42,7 +42,7 @@ print("""
 </head>
 <body>
 <h1> Ultra Motivator Update Password </h1>
-""")
+"""
 
 form = cgi.FieldStorage()
 
@@ -56,11 +56,11 @@ else:
 	input_confirm_new_password = form.getvalue("confirm_new_password", "")
 
 	if input_new_password != input_confirm_new_password:
-		print("""<h3>New Password Fields Did Not Match!</h3>""")
+		print """<h3>New Password Fields Did Not Match!</h3>"""
 		show_update_ui()
 	else:
 		try:
-			conn = mysql.connector.connect (
+			conn = MySQLdb.connect (
 			host = "my_host",
 			user = "my_user",
 			passwd = "my_password",
@@ -79,15 +79,15 @@ else:
 				if name == input_username and check_password(password, input_current_password):
 					command = "UPDATE User SET password = %s WHERE username = %s"
 					cur.execute(command, (hash_password(input_new_password), input_username))
-					print("""<h1>Password Updated For %s</h1>""" % input_username)
+					print """<h1>Password Updated For %s</h1>""" % input_username
 					signed_in = True;
 					break
 			
 			if signed_in == False:
-				print("""<h3>invalid username and/or password</h3>""")
+				print """<h3>invalid username and/or password</h3>"""
 		
-		except mysql.connector.Error as e:
-			print("Error %d: %s" % (e.args[0], e.args[1]))
+		except MySQLdb.Error, e:
+			print "Error %d: %s" % (e.args[0], e.args[1])
 		finally:
 			if cur:
 				# close the cursor
@@ -95,4 +95,4 @@ else:
 			if conn:
 				# close the connection
 				conn.close()
-	print("""</body></html>""")
+	print """</body></html>"""
