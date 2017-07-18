@@ -52,7 +52,7 @@ else:
 	input_password = form.getvalue("password", "")
 
 	try:
-		conn = MySQLdb.connect (
+		conn = mysql.connector.connect (
 		host = "my_host",
 		user = "my_user",
 		passwd = "my_password",
@@ -79,7 +79,7 @@ else:
 		if signed_in == False:
 			print("""<h1>invalid username and/or password</h1>""")
 		
-	except MySQLdb.Error as e:
+	except mysql.connector.Error as e:
 		print("""<h1>Error %d: %s</h1>""" % (e.args[0], e.args[1]))
 	finally:
 		if cur:

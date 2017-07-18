@@ -60,7 +60,7 @@ else:
 		show_update_ui()
 	else:
 		try:
-			conn = MySQLdb.connect (
+			conn = mysql.connector.connect (
 			host = "my_host",
 			user = "my_user",
 			passwd = "my_password",
@@ -86,7 +86,7 @@ else:
 			if signed_in == False:
 				print("""<h3>invalid username and/or password</h3>""")
 		
-		except MySQLdb.Error as e:
+		except mysql.connector.Error as e:
 			print("Error %d: %s" % (e.args[0], e.args[1]))
 		finally:
 			if cur:
